@@ -1,9 +1,14 @@
 # Universal HTTP Sender - Control4 Driver
+
+### Download
+[universal_http_sender.c4z](https://github.com/jacobmoses10/Control4-Universal-HTTP-Sender/releases/latest/download/universal_http_sender.c4z)
+
+
 **System requirements:**
 
 1.     OS 2.10.5+
 
-The Universal HTTP sender is an extension of theDriverWorks generic\_http driver. It is designed to send GET, POST, PUT or DELETE commands to one of five pre-defined URLs (set in Properties) or a manually defined URL (set in the Command parameters). Variable and events are provided for basic handling of any response. These commands are available for use in the programming section of Composer by selecting “Universal HTTP Sender” in the Actions menu.
+The Universal HTTP sender is an extension of the DriverWorks generic\_http driver. It is designed to send GET, POST, PUT or DELETE commands to one of five pre-defined URLs (set in Properties) or a manually defined URL (set in the Command parameters). Variable and events are provided for basic handling of any response. These commands are available for use in the programming section of Composer by selecting “Universal HTTP Sender” in the Actions menu.
 
 ## Properties
 
