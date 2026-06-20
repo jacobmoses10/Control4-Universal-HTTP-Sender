@@ -87,12 +87,6 @@
         <type>STRING</type>
         <readonly>false</readonly>
       </property>
-      <property>
-        <name>Preset URL 10</name>
-        <default></default>
-        <type>STRING</type>
-        <readonly>false</readonly>
-      </property>
     </properties>
     <commands>
       <command>
@@ -103,7 +97,7 @@
             <name>PRESET</name>
             <type>RANGED_INTEGER</type>
             <minimum>1</minimum>
-            <maximum>10</maximum>
+            <maximum>9</maximum>
           </param>
           <param>
             <name>JSON_HEADER</name>
@@ -133,7 +127,7 @@
             <name>PRESET</name>
             <type>RANGED_INTEGER</type>
             <minimum>1</minimum>
-            <maximum>10</maximum>
+            <maximum>9</maximum>
           </param>
           <param>
             <name>DATA</name>
@@ -171,7 +165,7 @@
             <name>PRESET</name>
             <type>RANGED_INTEGER</type>
             <minimum>1</minimum>
-            <maximum>10</maximum>
+            <maximum>9</maximum>
           </param>
           <param>
             <name>DATA</name>
@@ -209,7 +203,7 @@
             <name>PRESET</name>
             <type>RANGED_INTEGER</type>
             <minimum>1</minimum>
-            <maximum>10</maximum>
+            <maximum>9</maximum>
           </param>
           <param>
             <name>JSON_HEADER</name>
@@ -241,7 +235,7 @@
             <name>PRESET</name>
             <type>RANGED_INTEGER</type>
             <minimum>1</minimum>
-            <maximum>10</maximum>
+            <maximum>9</maximum>
           </param>
           <param>
             <name>JSON_HEADER</name>
@@ -271,7 +265,7 @@
             <name>PRESET</name>
             <type>RANGED_INTEGER</type>
             <minimum>1</minimum>
-            <maximum>10</maximum>
+            <maximum>9</maximum>
           </param>
           <param>
             <name>DATA</name>
@@ -309,7 +303,7 @@
             <name>PRESET</name>
             <type>RANGED_INTEGER</type>
             <minimum>1</minimum>
-            <maximum>10</maximum>
+            <maximum>9</maximum>
           </param>
           <param>
             <name>DATA</name>
@@ -347,7 +341,7 @@
             <name>PRESET</name>
             <type>RANGED_INTEGER</type>
             <minimum>1</minimum>
-            <maximum>10</maximum>
+            <maximum>9</maximum>
           </param>
           <param>
             <name>JSON_HEADER</name>

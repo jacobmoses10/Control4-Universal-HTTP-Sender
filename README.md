@@ -20,7 +20,7 @@ When set to On, prints out on the Lua tab the URL being requested and the respon
 
 The time (in seconds) that the URL engine will wait for a response before timing out and returning an error.
 
-#### Preset URL \[1-10\]
+#### Preset URL \[1-9\]
 
 Enter a URL here (including the leading http:// or https://) for later access in programming
 
