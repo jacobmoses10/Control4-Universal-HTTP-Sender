@@ -1,4 +1,4 @@
-# Universal HTTP Sender - Control4 Driver
+# Universal HTTP Sender - Control4 Driver v2
 
 ### Download
 [universal_http_sender.c4z](https://github.com/jacobmoses10/Control4-Universal-HTTP-Sender/releases/latest/download/universal_http_sender.c4z)
@@ -8,7 +8,7 @@
 
 1.     OS 2.10.5+
 
-The Universal HTTP sender is an extension of the DriverWorks generic\_http driver. It is designed to send GET, POST, PUT or DELETE commands to one of five pre-defined URLs (set in Properties) or a manually defined URL (set in the Command parameters). Variable and events are provided for basic handling of any response. These commands are available for use in the programming section of Composer by selecting “Universal HTTP Sender” in the Actions menu.
+The Universal HTTP sender is a revision of the DriverWorks generic\_http driver. It is designed to send GET, POST, PUT or DELETE commands to one of five pre-defined URLs (set in Properties) or a manually defined URL (set in the Command parameters). Variable and events are provided for basic handling of any response. These commands are available for use in the programming section of Composer by selecting “Universal HTTP Sender” in the Actions menu.
 
 ## Properties
 
@@ -20,7 +20,7 @@ When set to On, prints out on the Lua tab the URL being requested and the respon
 
 The time (in seconds) that the URL engine will wait for a response before timing out and returning an error.
 
-#### Preset URL \[1-5\]
+#### Preset URL \[1-10\]
 
 Enter a URL here (including the leading http:// or https://) for later access in programming
 
@@ -119,3 +119,9 @@ http://192.168.x.x:8123/api/services/script/my-script
 7.      Execute the script to send the HTTP Command to Home Assistant.
 
 8.      Turn on debugging in the driver’s properties to print output/error messages to the Lua tab.
+
+## Changelog
+
+#### v2
+
+Updated to utilise the newer C4:url() URL interface which is better supported by the more recent X4 OS.

@@ -8,6 +8,60 @@ function Print (data)
 	end
 end
 
+dbg = function (...) end
+UrlTimeoutSeconds = 5
+ActiveUrlTransfers = {}
+
+local function RemoveActiveTransfer (transfer)
+	for i = #ActiveUrlTransfers, 1, -1 do
+		if (ActiveUrlTransfers [i] == transfer) then
+			table.remove (ActiveUrlTransfers, i)
+			return
+		end
+	end
+end
+
+local function RunUrlRequest (method, url, data, headers)
+	headers = headers or {}
+
+	local transfer = C4:url ()
+	transfer
+		:OnDone (function (completedTransfer, responses, errCode, errMsg)
+			RemoveActiveTransfer (completedTransfer)
+
+			local lastResponse = responses and responses [#responses]
+			local responseCode = lastResponse and lastResponse.code or 0
+			local responseBody = lastResponse and lastResponse.body or ''
+			local responseHeaders = lastResponse and lastResponse.headers or {}
+
+			local strError = nil
+			if (errCode ~= 0) then
+				if (errCode == -1) then
+					strError = 'Transfer aborted'
+				else
+					strError = errMsg or ('URL transfer failed with error ' .. tostring (errCode))
+				end
+			end
+
+			CheckResponse (0, responseBody, responseCode, responseHeaders, strError)
+		end)
+		:SetOptions ({
+			timeout = UrlTimeoutSeconds,
+		})
+
+	table.insert (ActiveUrlTransfers, transfer)
+
+	if (method == 'GET') then
+		transfer:Get (url, headers)
+	elseif (method == 'POST') then
+		transfer:Post (url, data or '', headers)
+	elseif (method == 'PUT') then
+		transfer:Put (url, data or '', headers)
+	elseif (method == 'DELETE') then
+		transfer:Delete (url, headers)
+	end
+end
+
 function OnDriverLateInit ()
 	if (not (Variables and Variables.HTTP_RESPONSE_DATA)) then
 		C4:AddVariable ('HTTP_RESPONSE_DATA', '', 'STRING', true, false)
@@ -43,11 +97,11 @@ function OnPropertyChanged (strProperty)
 		if (value == 'On') then
 			dbg = print
 		else
-			dbg = function () end
+			dbg = function (...) end
 		end
 
 	elseif (strProperty == 'URL Timeout') then
-		C4:urlSetTimeout (tonumber (value))
+		UrlTimeoutSeconds = tonumber (value) or 5
 
 	elseif (presetNum) then
 		Presets [presetNum] = value
@@ -60,8 +114,8 @@ function ExecuteCommand (strCommand, tParams)
 	local output = {'--- ExecuteCommand', strCommand, '----PARAMS----'}
 	for k,v in pairs (tParams) do table.insert (output, tostring (k) .. ' = ' .. tostring (v)) end
 	table.insert (output, '---')
-	output = table.concat (output, '\r\n')
-	dbg (output)
+	local outputMessage = table.concat (output, '\r\n')
+	dbg (outputMessage)
 
 	if (strCommand == 'LUA_ACTION') then
 		if (tParams.ACTION) then
@@ -74,19 +128,22 @@ function ExecuteCommand (strCommand, tParams)
 
 	local url = (preset and Presets [preset]) or tParams.URL
 
-	local header = C4:JsonDecode(tParams.JSON_HEADER) or {}
+	local header = {}
+	if (tParams.JSON_HEADER and tParams.JSON_HEADER ~= '') then
+		header = C4:JsonDecode (tParams.JSON_HEADER) or {}
+	end
 
 	if (url and url ~= '') then
 		if (string.find (strCommand, 'GET')) then
-			C4:urlGet (url, header, false, CheckResponse)
+			RunUrlRequest ('GET', url, nil, header)
 		elseif (string.find (strCommand, 'POST')) then
 			local data = tParams.DATA or ''
-			C4:urlPost (url, data, header, false, CheckResponse)
+			RunUrlRequest ('POST', url, data, header)
 		elseif (string.find (strCommand, 'PUT')) then
 			local data = tParams.DATA or ''
-			C4:urlPut (url, data, header, false, CheckResponse)
+			RunUrlRequest ('PUT', url, data, header)
 		elseif (string.find (strCommand, 'DELETE')) then
-			C4:urlDelete (url, header, false, CheckResponse)
+			RunUrlRequest ('DELETE', url, nil, header)
 		end
 	end
 end
@@ -99,8 +156,8 @@ function CheckResponse (ticketId, strData, responseCode, tHeaders, strError)
 		table.insert (output, 'Response Code: ' .. tostring (responseCode))
 		table.insert (output, 'Returned data: ' .. (strData or ''))
 	end
-	output = table.concat (output, '\r\n')
-	dbg (output)
+	local outputMessage = table.concat (output, '\r\n')
+	dbg (outputMessage)
 
 	if (strError) then
 		C4:SetVariable ('HTTP_ERROR', strError)
